@@ -1,6 +1,7 @@
 package container;
 
 import enums.Shape;
+import exceptions.ItemAlreadyPlacedException;
 import exceptions.ItemStoreException;
 import model.Item;
 import model.ItemInContainer;
@@ -16,10 +17,13 @@ public class Flat extends Container {
 
     @Override
     public void addItem(Item item) throws ItemStoreException {
+
         if (getList().size() >= countMaxValueItem) {
             throw new ItemStoreException("Стопка переполнена");
         } else if (item.getShape().equals(Shape.CIRCLE)) {
             throw new IllegalArgumentException("Можно только плоские предметы");
+        } else if (item.isFlag()) {
+            throw new ItemAlreadyPlacedException("Контейнер уже лежит в другом контейнере");
         }
         if (item instanceof Container) {
             this.totalWeight += ((Container) item).getTotalWeight();
@@ -35,3 +39,6 @@ public class Flat extends Container {
     }
 
 }
+
+
+
